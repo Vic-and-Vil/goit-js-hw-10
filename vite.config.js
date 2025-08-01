@@ -4,7 +4,6 @@ import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 import SortCss from 'postcss-sort-media-queries';
 
-
 export default defineConfig(({ command }) => {
   return {
     define: {
@@ -46,8 +45,4 @@ export default defineConfig(({ command }) => {
       }),
     ],
   };
-
-({
-    base: '/goit-js-hw-10/',
-  })
 });
