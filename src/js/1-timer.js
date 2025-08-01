@@ -5,13 +5,12 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 const startBtn = document.querySelector('[data-start]');
-const dateInput = document.querySelector('#datetime-picker');
-const timerFields = {
-  days: document.querySelector('[data-days]'),
-  hours: document.querySelector('[data-hours]'),
-  minutes: document.querySelector('[data-minutes]'),
-  seconds: document.querySelector('[data-seconds]'),
-};
+const input = document.querySelector('#datetime-picker');
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
+
 
 let userSelectedDate = null;
 let timerInterval = null;
@@ -42,23 +41,27 @@ const options = {
 flatpickr(dateInput, options);
 
 startBtn.addEventListener('click', () => {
+if (!userSelectedDate) return;
+
   startBtn.disabled = true;
-  dateInput.disabled = true;
+  input.disabled = true;
 
-  timerInterval = setInterval(() => {
+  timerId = setInterval(() => {
     const now = new Date();
-    const timeLeft = userSelectedDate - now;
+    const diff = userSelectedDate - now;
 
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      updateTimer(0);
-      dateInput.disabled = false;
+    if (diff <= 0) {
+      clearInterval(timerId);
+      updateTimerDisplay(0);
+      input.disabled = false;
       return;
-    }
-
-    updateTimer(timeLeft);
+      }
+      
+    updateTimerDisplay(diff);
   }, 1000);
 });
+
+
 
 function updateTimer(ms) {
   const { days, hours, minutes, seconds } = convertMs(ms);
