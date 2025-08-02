@@ -37,7 +37,7 @@ const options = {
   },
 };
 
-flatpickr(input, options);
+flatpickr(options);
 
 startBtn.addEventListener('click', () => {
 if (!userSelectedDate) return;
