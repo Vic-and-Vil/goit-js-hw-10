@@ -10,13 +10,13 @@ const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 
-
 let userSelectedDate = null;
-let timerInterval = null;
+let timerId = null;
 
 startBtn.disabled = true;
 
-const options = {
+// === FLATPICKR ===
+flatpickr(input, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -35,12 +35,11 @@ const options = {
       startBtn.disabled = false;
     }
   },
-};
+});
 
-flatpickr(input , options);
-
+// === START TIMER ===
 startBtn.addEventListener('click', () => {
-if (!userSelectedDate) return;
+  if (!userSelectedDate) return;
 
   startBtn.disabled = true;
   input.disabled = true;
@@ -51,25 +50,25 @@ if (!userSelectedDate) return;
 
     if (diff <= 0) {
       clearInterval(timerId);
-      updateTimerDisplay(0);
+      updateTimer(0);
       input.disabled = false;
       return;
-      }
-      
-    updateTimerDisplay(diff);
+    }
+
+    updateTimer(diff);
   }, 1000);
 });
 
-
-
+// === UPDATE DISPLAY ===
 function updateTimer(ms) {
   const { days, hours, minutes, seconds } = convertMs(ms);
-  timerFields.days.textContent = addLeadingZero(days);
-  timerFields.hours.textContent = addLeadingZero(hours);
-  timerFields.minutes.textContent = addLeadingZero(minutes);
-  timerFields.seconds.textContent = addLeadingZero(seconds);
+  daysEl.textContent = addLeadingZero(days);
+  hoursEl.textContent = addLeadingZero(hours);
+  minutesEl.textContent = addLeadingZero(minutes);
+  secondsEl.textContent = addLeadingZero(seconds);
 }
 
+// === UTILS ===
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
